@@ -14,14 +14,11 @@ public class FileCache {
         cacheDir = new File(context.getCacheDir()+"/images");
         if(!cacheDir.mkdirs()) {
             boolean created = cacheDir.mkdirs();
-            Log.d("filecache", "dir : "+ cacheDir);
-            Log.d("filecache", "dir created : "+ created);
         }
     }
 
     public File getFile(String url) {
         String filename = String.valueOf(url.hashCode());
-        Log.d("filecache", "filename : " +filename);
 
         File f = new File(cacheDir, filename);
         return f;

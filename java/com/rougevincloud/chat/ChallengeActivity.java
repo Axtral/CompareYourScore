@@ -3,10 +3,13 @@ package com.rougevincloud.chat;
 import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import com.rougevincloud.chat.lists.ListChallengeAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +21,7 @@ public class ChallengeActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("id", String.valueOf(getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_ID)));
         setContentView(R.layout.activity_challenge);
         for (int i = 0; i < 10; ++i) {
             scores.add(new HashMap<String, String>());

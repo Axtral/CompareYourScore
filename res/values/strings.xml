@@ -12,6 +12,6 @@
     <string name="write_hint">Write your message here</string>
     <string name="ok">Ok</string>
     <string name="desc_challenge_icon">Challenge Icon</string>
-    <string name="score_update">Update your score</string>
+    <string name="score_update">Set your score</string>
     <!--todo vf-->
 </resources>

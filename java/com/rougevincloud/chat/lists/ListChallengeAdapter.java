@@ -1,14 +1,19 @@
 package com.rougevincloud.chat.lists;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rougevincloud.chat.ChallengeActivity;
 import com.rougevincloud.chat.R;
 import com.rougevincloud.chat.lib.cache.ImageLoader;
 
@@ -16,13 +21,14 @@ import java.util.List;
 
 public class ListChallengeAdapter extends BaseAdapter {
     private List<ChallengeItem> items;
-    private Context context;
+    private Activity activity;
     private ImageLoader imageLoader;
+    public final static String EXTRA_ID = "com.rougevincloud.chat.ID";
 
-    public ListChallengeAdapter(Context context, List<ChallengeItem> items) {
+    public ListChallengeAdapter(Activity activity, List<ChallengeItem> items) {
         this.items = items;
-        this.context = context;
-        imageLoader = new ImageLoader(context);
+        this.activity = activity;
+        imageLoader = new ImageLoader(activity);
     }
 
     @Override
@@ -44,7 +50,7 @@ public class ListChallengeAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.item_challenge, viewGroup, false);
 
             holder = new ViewHolder();
@@ -52,6 +58,7 @@ public class ListChallengeAdapter extends BaseAdapter {
             holder.title = (TextView) view.findViewById(R.id.title);
             holder.desc = (TextView) view.findViewById(R.id.desc);
             holder.position = i;
+            holder.onClick = new ChallengeClick(activity, items.get(i).getId());
             view.setTag(holder);
         }
         else
@@ -60,6 +67,7 @@ public class ListChallengeAdapter extends BaseAdapter {
         imageLoader.displayImage(items.get(i).getImg(), holder.icon);
         holder.title.setText(items.get(i).getTitle());
         holder.desc.setText(items.get(i).getDesc());
+        view.setOnClickListener(holder.onClick);
 
         return view;
     }
@@ -69,5 +77,23 @@ public class ListChallengeAdapter extends BaseAdapter {
         TextView desc;
         ImageView icon;
         int position;
+        ChallengeClick onClick;
+    }
+
+    private class ChallengeClick implements View.OnClickListener {
+        private Activity activity;
+        private int id;
+
+        public ChallengeClick(Activity activity, int id) {
+            this.activity = activity;
+            this.id = id;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(activity, ChallengeActivity.class);
+            intent.putExtra(EXTRA_ID, id);
+            activity.startActivity(intent);
+        }
     }
 }

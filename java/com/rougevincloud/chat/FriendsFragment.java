@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.rougevincloud.chat.data_managers.DBOpenHelper;
-import com.rougevincloud.chat.interactions.ChallengeClick;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.data_managers.Server;
@@ -33,17 +32,19 @@ public class FriendsFragment extends ListFragment {
         if (!DBOpenHelper.isJustCreated()) {
             //read from db
             challenges = new ArrayList<>();
-            String[] cols = {DBOpenHelper.COLUMN_IMG, DBOpenHelper.COLUMN_TITLE, DBOpenHelper.COLUMN_DESC};
+            String[] cols = {DBOpenHelper.COLUMN_ID, DBOpenHelper.COLUMN_IMG, DBOpenHelper.COLUMN_TITLE, DBOpenHelper.COLUMN_DESC};
             Cursor cursor = db.query(DBOpenHelper.DATABASE_TABLE_FRIENDS, cols, null, null, null, null, null);
+            int idIndex = cursor.getColumnIndex(DBOpenHelper.COLUMN_ID);
             int titleIndex = cursor.getColumnIndex(DBOpenHelper.COLUMN_TITLE);
             int descIndex = cursor.getColumnIndex(DBOpenHelper.COLUMN_DESC);
             int imgIndex = cursor.getColumnIndex(DBOpenHelper.COLUMN_IMG);
 
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                int id = cursor.getInt(idIndex);
                 String title = cursor.getString(titleIndex);
                 String desc = cursor.getString(descIndex);
                 String img = cursor.getString(imgIndex);
-                challenges.add(new ChallengeItem(img, title, desc));
+                challenges.add(new ChallengeItem(id, img, title, desc));
             }
 
             cursor.close();
@@ -60,6 +61,7 @@ public class FriendsFragment extends ListFragment {
             }
             for (ChallengeItem item : challenges) {
                 ContentValues values = new ContentValues();
+                values.put(DBOpenHelper.COLUMN_ID, item.getId());
                 values.put(DBOpenHelper.COLUMN_TITLE, item.getTitle());
                 values.put(DBOpenHelper.COLUMN_DESC , item.getDesc());
                 values.put(DBOpenHelper.COLUMN_IMG , item.getImg());
@@ -68,14 +70,8 @@ public class FriendsFragment extends ListFragment {
             db.close();
         }
 
-        setListAdapter(new ListChallengeAdapter(getContext(), challenges));
+        setListAdapter(new ListChallengeAdapter(getActivity(), challenges));
 
         return rootView;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getListView().setOnItemClickListener(new ChallengeClick(getActivity()));
     }
 }

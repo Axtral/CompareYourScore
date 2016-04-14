@@ -1,7 +1,5 @@
 package com.rougevincloud.chat.data_managers;
 
-import android.graphics.drawable.Icon;
-
 import com.rougevincloud.chat.LoginActivity;
 import com.rougevincloud.chat.lists.ChallengeItem;
 
@@ -55,7 +53,7 @@ public class Server {
 
     public static List<ChallengeItem> findAllChallenges() {
         try {
-            JSONObject result = new JSONGetter(url + "challenges.json").execute().get();
+            JSONObject result = new JSONGetter(url + "aze.json").execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return parseChallenges(result);
@@ -67,7 +65,7 @@ public class Server {
 
     public static List<ChallengeItem> findFriendsChallenges(String pseudo) {
         try {
-            JSONObject result = new JSONGetter(url + "challenges.json?pseudo=" + pseudo).execute().get();
+            JSONObject result = new JSONGetter(url + "aze.json?pseudo=" + pseudo).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return parseChallenges(result);
@@ -95,10 +93,11 @@ public class Server {
         int i = 0;
         while (i < data.length()) {
             JSONObject item = data.getJSONObject(i++);
+            int id = item.getInt("id");
             String iconUrl = item.getString("icon");
             String title = item.getString("title");
             String desc = item.getString("desc");
-            list.add(new ChallengeItem(iconUrl, title, desc));
+            list.add(new ChallengeItem(id, iconUrl, title, desc));
         }
 
         return list;

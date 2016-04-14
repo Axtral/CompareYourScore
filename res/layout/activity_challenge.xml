@@ -41,6 +41,7 @@
             android:layout_height="match_parent"
             android:background="@color/greyLight"
             android:hint="@string/score_update"
+            android:inputType="numberDecimal"
             android:layout_weight="1"/>
         <com.rougevincloud.chat.custom_views.MonoButton
             android:layout_width="match_parent"
