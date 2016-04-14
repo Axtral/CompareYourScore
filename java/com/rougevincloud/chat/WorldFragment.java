@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.rougevincloud.chat.data_managers.DBOpenHelper;
+import com.rougevincloud.chat.interactions.ChallengeClick;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.data_managers.Server;
@@ -23,7 +24,7 @@ public class WorldFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_friends, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_world, container, false);
         List<ChallengeItem> challenges;
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
@@ -61,7 +62,7 @@ public class WorldFragment extends ListFragment {
                 values.put(DBOpenHelper.COLUMN_TITLE, item.getTitle());
                 values.put(DBOpenHelper.COLUMN_DESC, item.getDesc());
                 values.put(DBOpenHelper.COLUMN_IMG, item.getImg());
-                db.insert(DBOpenHelper.DATABASE_TABLE_FRIENDS, null, values);
+                db.insert(DBOpenHelper.DATABASE_TABLE_ALL, null, values);
             }
             db.close();
         }
@@ -71,4 +72,9 @@ public class WorldFragment extends ListFragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnItemClickListener(new ChallengeClick(getActivity()));
+    }
 }

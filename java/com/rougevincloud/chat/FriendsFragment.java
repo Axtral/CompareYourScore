@@ -8,9 +8,11 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.rougevincloud.chat.data_managers.DBOpenHelper;
+import com.rougevincloud.chat.interactions.ChallengeClick;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.data_managers.Server;
@@ -69,5 +71,11 @@ public class FriendsFragment extends ListFragment {
         setListAdapter(new ListChallengeAdapter(getContext(), challenges));
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnItemClickListener(new ChallengeClick(getActivity()));
     }
 }
