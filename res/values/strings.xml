@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CompareYourScore</string>
+    <string name="welcome">Welcome to\t</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="passwd">Password</string>
+    <string name="login_form_ok">Get in :)</string>
+    <string name="invite">Please enter your pseudo below</string>
+    <string name="invite_connection">This pseudo exists, you can connect if it\'s yours</string>
+    <string name="invite_inscription">This pseudo doesn\'t exist, you can sign in if you don\'t have any account</string>
+    <string name="invite_loading">Looking for pseudo…</string>
+    <string name="hello">Hello, %s !</string>
+    <string name="write_hint">Write your message here</string>
+    <string name="ok">Ok</string>
+    <string name="desc_challenge_icon">Challenge Icon</string>
+    <!--todo vf-->
+</resources>
