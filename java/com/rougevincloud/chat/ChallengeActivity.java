@@ -1,15 +1,15 @@
 package com.rougevincloud.chat;
 
 import android.app.ListActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.rougevincloud.chat.data_managers.Server;
@@ -22,13 +22,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class ChallengeActivity extends ListActivity {
-    private String[] cols = new String[] {"nom", "score"};
+    private String[] cols = new String[] {"name", "score"};
     private List<ScoreItem> scores;
+    private ArrayList< HashMap<String, String> > scoresViewContent = new ArrayList<>();
+    private ScoreItem ownScore = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int idChallenge = getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_ID);
+        final int idChallenge = getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_ID);
+        final int idUser = getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_IDUSER);
         setContentView(R.layout.activity_challenge);
 
         Button btn = (Button) findViewById(R.id.update);
@@ -42,20 +45,31 @@ public class ChallengeActivity extends ListActivity {
                     return;
                 }
 
-                //todo update score
+                Server.setScore(idChallenge, idUser, Integer.parseInt(newScore));
+
+                if (ownScore != null) {
+                    scoresViewContent.get(0).remove("score");
+                    scoresViewContent.get(0).put("score", newScore);
+                }
+                else
+                    addSportViewContent("You", Integer.parseInt(newScore), 0);
+                getListView().invalidateViews();
             }
         });
 
         scores = Server.findScoresByChallenge(idChallenge);
         if (scores == null)
             return;
-        List< HashMap<String, String> > scoresViewContent = new ArrayList<>();
+        scoresViewContent = new ArrayList<>();
         for (ScoreItem score : scores) {
-            scoresViewContent.add(new HashMap<String, String>());
-            int index = scoresViewContent.size()-1;
-            scoresViewContent.get(index).put("nom", String.valueOf(score.getUser()));
-            scoresViewContent.get(index).put("score", "Score : " + String.valueOf(score.getScore()));
+            if (score.getUser().getId() == idUser) {
+                ownScore = score;
+                continue;
+            }
+            addSportViewContent(score.getUser().getPseudo(), score.getScore(), null);
         }
+        if (ownScore != null) //own score first
+            addSportViewContent("You", ownScore.getScore(), 0);
 
         ListAdapter adapter = new SimpleAdapter(this,
                 scoresViewContent,
@@ -64,6 +78,17 @@ public class ChallengeActivity extends ListActivity {
                 new int[] {android.R.id.text1, android.R.id.text2});
 
         setListAdapter(adapter);
+    }
+
+    private void addSportViewContent(String name, int score, Integer index) {
+        if (index != null)
+            scoresViewContent.add(index, new HashMap<String, String>());
+        else {
+            scoresViewContent.add(new HashMap<String, String>());
+            index = scoresViewContent.size()-1;
+        }
+        scoresViewContent.get(index).put("name", name);
+        scoresViewContent.get(index).put("score", "Score : " + String.valueOf(score));
     }
 
     @Override

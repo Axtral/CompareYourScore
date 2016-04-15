@@ -1,11 +1,9 @@
 package com.rougevincloud.chat.data_managers;
 
-import android.util.Log;
-
 import com.rougevincloud.chat.LoginActivity;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ScoreItem;
-import com.rougevincloud.chat.lists.User;
+import com.rougevincloud.chat.lists.UserItem;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -150,6 +148,21 @@ public class Server {
         }
     }
 
+    public static Boolean setScore(int challengeId, int userId, int score) {
+        try {
+            JSONObject result = new JSONGetter(/*url + */
+                    "http://darkicex3.alwaysdata.net/android_app/update/updateScore.php?challenge_id="+ challengeId +
+                                                                                        "&user_id="+ userId +
+                                                                                        "&score="+ score).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return result.getBoolean("response");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static List<ScoreItem> parseScores(JSONObject result) throws Exception {
         List<ScoreItem> list = new ArrayList<>();
         JSONArray data = result.getJSONArray("scores");
@@ -162,7 +175,7 @@ public class Server {
             int score = item.getInt("score");
             list.add(new ScoreItem(id,
                     new ChallengeItem(challengeId, null, null, null),       //todo findChallengeById
-                    new User(userId, null, null),                           //todo findUserById
+                    new UserItem(userId, null, null),                           //todo findUserById
                     score));
         }
 
