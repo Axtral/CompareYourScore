@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (pseudoExists) //connection
                     ok = Server.connect(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
                 else  //register
-                    ok = true;  //todo Server.register();
+                    ok = Server.register(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
 
                 //app reaction
                 if (ok != null && hashPasswd != null) {

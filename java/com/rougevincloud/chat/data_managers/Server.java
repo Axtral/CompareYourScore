@@ -51,6 +51,25 @@ public class Server {
         }
     }
 
+    public static Boolean register(String pseudo, String passwd, LoginActivity activity) {
+        JSONObject result;
+        try {
+            passwd = hashPasswd(passwd);
+            activity.setHashPasswd(passwd);
+            result = new JSONGetter(/*url + */"http://darkicex3.alwaysdata.net/android_app/insert/insertUser.php?username=" + pseudo +"&password="+ passwd).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            Boolean response = result.getBoolean("response");
+            if (!response)
+                activity.toast(result.getString("message"));
+            return response;
+        } catch (Exception e) {
+            activity.toast("Error : " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static List<ChallengeItem> findAllChallenges() {
         try {
             JSONObject result = new JSONGetter(url + "aze.json").execute().get();
