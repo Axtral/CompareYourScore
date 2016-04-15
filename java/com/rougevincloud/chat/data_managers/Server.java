@@ -37,7 +37,7 @@ public class Server {
         }
     }
 
-    public static Boolean connect(String pseudo, String passwd, LoginActivity activity) {
+    public static Integer connect(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
             passwd = hashPasswd(passwd);
@@ -48,7 +48,7 @@ public class Server {
             Boolean response = result.getBoolean("response");
             if (!response)
                 activity.toast(result.getString("message"));
-            return response;
+            return result.getInt("id");
         } catch (Exception e) {
             activity.toast("Error : " + e.getMessage());
             e.printStackTrace();
@@ -56,7 +56,7 @@ public class Server {
         }
     }
 
-    public static Boolean register(String pseudo, String passwd, LoginActivity activity) {
+    public static Integer register(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
             passwd = hashPasswd(passwd);
@@ -67,7 +67,7 @@ public class Server {
             Boolean response = result.getBoolean("response");
             if (!response)
                 activity.toast(result.getString("message"));
-            return response;
+            return result.getInt("id");
         } catch (Exception e) {
             activity.toast("Error : " + e.getMessage());
             e.printStackTrace();
@@ -152,7 +152,6 @@ public class Server {
 
     private static List<ScoreItem> parseScores(JSONObject result) throws Exception {
         List<ScoreItem> list = new ArrayList<>();
-        Log.d("score json", result.toString());
         JSONArray data = result.getJSONArray("scores");
         int i = 0;
         while (i < data.length()) {

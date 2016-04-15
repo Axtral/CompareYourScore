@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Fragment[] frags = new Fragment[2];
     private String pseudo;
+    private Integer idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +30,13 @@ public class MainActivity extends AppCompatActivity {
         //Set user
         SharedPreferences prefs = getSharedPreferences("user_infos", MODE_PRIVATE);
         pseudo = prefs.getString("pseudo", null);
+        idUser = prefs.getInt("id", 0);
         if (pseudo == null) {
             Intent login = new Intent(this, LoginActivity.class);
             startActivity(login);
             finish();
         }
+
 
         setContentView(R.layout.activity_main);
         TextView hello = (TextView) findViewById(R.id.welcome);
@@ -57,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
     public String getPseudo() {
         return pseudo;
+    }
+
+    public int getIdUser() {
+        return idUser;
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

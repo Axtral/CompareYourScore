@@ -70,16 +70,21 @@ public class LoginActivity extends AppCompatActivity {
 
                 //server work
                 Boolean ok;
-                if (pseudoExists) //connection
-                    ok = Server.connect(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
-                else  //register
-                    ok = Server.register(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
+                Integer id;
+                if (pseudoExists) { //connection
+                    id = Server.connect(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
+                    ok = id != null;
+                }
+                else {  //register
+                    id = Server.register(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
+                    ok = id != null;
+                }
 
                 //app reaction
-                if (ok != null && hashPasswd != null) {
-                    if (ok) {
+                if (ok && hashPasswd != null) {
                         SharedPreferences prefs = getSharedPreferences("user_infos", MODE_PRIVATE);
                         SharedPreferences.Editor edit = prefs.edit();
+                        edit.putInt("id", id);
                         edit.putString("pseudo", pseudo.getText().toString());
                         edit.putString("passwd", hashPasswd);
                         edit.apply();
@@ -87,12 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent main = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(main);
                         finish();
-                    }
-                    else;
-                    //todo connection error
                 }
-                else;
-                //todo connection error
             }//OnClick()
         });
     }

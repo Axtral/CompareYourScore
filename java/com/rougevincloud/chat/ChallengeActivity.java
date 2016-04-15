@@ -4,7 +4,10 @@ import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -16,6 +19,7 @@ import com.rougevincloud.chat.lists.ScoreItem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ChallengeActivity extends ListActivity {
     private String[] cols = new String[] {"nom", "score"};
@@ -24,9 +28,23 @@ public class ChallengeActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("id", String.valueOf(getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_ID)));
         int idChallenge = getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_ID);
         setContentView(R.layout.activity_challenge);
+
+        Button btn = (Button) findViewById(R.id.update);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText scoreEdit = (EditText) findViewById(R.id.scoreEdit);
+                String newScore = scoreEdit.getText().toString();
+                if (Objects.equals(newScore, "")) {
+                    scoreEdit.setHintTextColor(getColor(R.color.error));
+                    return;
+                }
+
+                //todo update score
+            }
+        });
 
         scores = Server.findScoresByChallenge(idChallenge);
         if (scores == null)
@@ -46,5 +64,11 @@ public class ChallengeActivity extends ListActivity {
                 new int[] {android.R.id.text1, android.R.id.text2});
 
         setListAdapter(adapter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
     }
 }
