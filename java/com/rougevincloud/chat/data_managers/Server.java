@@ -1,5 +1,7 @@
 package com.rougevincloud.chat.data_managers;
 
+import android.support.annotation.Nullable;
+
 import com.rougevincloud.chat.LoginActivity;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ScoreItem;
@@ -21,6 +23,7 @@ public class Server {
     private Server() {}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////LOGIN
+    @Nullable
     public static Boolean pseudoExists(String pseudo, LoginActivity activity) {
         JSONObject result;
         try {
@@ -35,6 +38,7 @@ public class Server {
         }
     } //SERVER OK
 
+    @Nullable
     public static Integer connect(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
@@ -57,6 +61,7 @@ public class Server {
     } //OK
 
 
+    @Nullable
     public static Integer register(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
@@ -91,6 +96,19 @@ public class Server {
 
 //////////////////////////////////////////////////////////////////////////////////////////CHALLENGES
 
+
+    private static ChallengeItem findChallengeById(int id) {
+        try {
+            JSONObject result = new JSONGetter(url + "show/challenge.php?id="+id).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return parseChallenges(result).get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static List<ChallengeItem> findAllChallenges() {
         return findChallenges("", null);
     }
@@ -101,7 +119,7 @@ public class Server {
 
     private static List<ChallengeItem> findChallenges(String getField, String val) {
         try {
-            String uri = "aze.json";
+            String uri = "/show/challenge.php";
             if (val != null)
                 uri += "?"+ getField +"="+ val;
             JSONObject result = new JSONGetter(url + uri).execute().get();
@@ -140,9 +158,10 @@ public class Server {
         return findScores(id, "user");
     }
 
+    @Nullable
     private static List<ScoreItem> findScores(int id, String getField) {
         try {
-            JSONObject result = new JSONGetter("http://darkicex3.alwaysdata.net/android_app/show/score.php?"+ getField +"=" + id).execute().get();
+            JSONObject result = new JSONGetter(url +"/show/score.php?"+ getField +"=" + id).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return parseScores(result);
@@ -152,12 +171,13 @@ public class Server {
         }
     }
 
+    @Nullable
     public static Boolean setScore(int challengeId, int userId, int score) {
         try {
-            JSONObject result = new JSONGetter(/*url + */
-                    "http://darkicex3.alwaysdata.net/android_app/update/score.php?challenge_id="+ challengeId +
-                                                                                        "&user_id="+ userId +
-                                                                                        "&score="+ score).execute().get();
+                    JSONObject result = new JSONGetter(
+                            url +"update/score.php?challenge_id="+ challengeId +
+                                    "&user_id="+ userId +
+                                    "&score="+ score).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return result.getBoolean("response");
@@ -167,6 +187,7 @@ public class Server {
         }
     }
 
+    @Nullable
     private static List<ScoreItem> parseScores(JSONObject result) throws Exception {
         List<ScoreItem> list = new ArrayList<>();
         JSONArray data = result.getJSONArray("scores");
@@ -177,8 +198,9 @@ public class Server {
             int challengeId = item.getInt("challenge_id");
             int userId = item.getInt("user_id");
             int score = item.getInt("score");
+            ChallengeItem challenge = findChallengeById(challengeId);
             list.add(new ScoreItem(id,
-                    new ChallengeItem(challengeId, null, null, null),       //todo findChallengeById
+                    challenge,
                     new UserItem(userId, null, null),                           //todo findUserById
                     score));
         }
