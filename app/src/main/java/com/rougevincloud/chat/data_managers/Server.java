@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class Server {
-    public static final String url = "http://rougevincloud.com/android/";
+    public static final String url = "http://darkicex3.alwaysdata.net/android_app/";
 
     private Server() {}
 
@@ -24,7 +24,7 @@ public class Server {
     public static Boolean pseudoExists(String pseudo, LoginActivity activity) {
         JSONObject result;
         try {
-            result = new JSONGetter(url + "pseudo.php?pseudo=" + pseudo).execute().get();
+            result = new JSONGetter(url + "pseudoExist.php?username=" + pseudo).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return result.getBoolean("response");
@@ -40,7 +40,9 @@ public class Server {
         try {
             passwd = hashPasswd(passwd);
             activity.setHashPasswd(passwd);
-            result = new JSONGetter(url + "pseudo.php?pseudo=" + pseudo+"&passwd="+passwd).execute().get();
+            result = new JSONGetter(url + "connectUser?username=" + pseudo + "&password=" +passwd)
+                    .execute().get();
+
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             Boolean response = result.getBoolean("response");
@@ -52,14 +54,14 @@ public class Server {
             e.printStackTrace();
             return null;
         }
-    }
+    } //OK
 
     public static Integer register(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
             passwd = hashPasswd(passwd);
             activity.setHashPasswd(passwd);
-            result = new JSONGetter(/*url + */"http://darkicex3.alwaysdata.net/android_app/insert/insertUser.php?username=" + pseudo +"&password="+ passwd).execute().get();
+            result = new JSONGetter(/*url + */url + "insert/insertUser.php?username=" + pseudo +"&password="+ passwd).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             Boolean response = result.getBoolean("response");
@@ -138,7 +140,7 @@ public class Server {
 
     private static List<ScoreItem> findScores(int id, String getField) {
         try {
-            JSONObject result = new JSONGetter(/*url + */"http://darkicex3.alwaysdata.net/android_app/show/showScores.php?"+ getField +"=" + id).execute().get();
+            JSONObject result = new JSONGetter(/*url + */"http://darkicex3.alwaysdata.net/android_app/show/score.php?"+ getField +"=" + id).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return parseScores(result);
@@ -151,7 +153,7 @@ public class Server {
     public static Boolean setScore(int challengeId, int userId, int score) {
         try {
             JSONObject result = new JSONGetter(/*url + */
-                    "http://darkicex3.alwaysdata.net/android_app/update/updateScore.php?challenge_id="+ challengeId +
+                    "http://darkicex3.alwaysdata.net/android_app/update/score.php?challenge_id="+ challengeId +
                                                                                         "&user_id="+ userId +
                                                                                         "&score="+ score).execute().get();
             if (result == null)
