@@ -33,7 +33,7 @@ public class Server {
             e.printStackTrace();
             return null;
         }
-    }
+    } //OK
 
     public static Integer connect(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
@@ -56,12 +56,13 @@ public class Server {
         }
     } //OK
 
+
     public static Integer register(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
             passwd = hashPasswd(passwd);
             activity.setHashPasswd(passwd);
-            result = new JSONGetter(/*url + */url + "insert/insertUser.php?username=" + pseudo +"&password="+ passwd).execute().get();
+            result = new JSONGetter(url + "insert/user.php?username=" + pseudo +"&password="+ passwd).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             Boolean response = result.getBoolean("response");
@@ -73,7 +74,7 @@ public class Server {
             e.printStackTrace();
             return null;
         }
-    }
+    } //OK
 
     public static String hashPasswd(String passwd) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -140,7 +141,7 @@ public class Server {
 
     private static List<ScoreItem> findScores(int id, String getField) {
         try {
-            JSONObject result = new JSONGetter(/*url + */"http://darkicex3.alwaysdata.net/android_app/show/score.php?"+ getField +"=" + id).execute().get();
+            JSONObject result = new JSONGetter("http://darkicex3.alwaysdata.net/android_app/show/score.php?"+ getField +"=" + id).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return parseScores(result);
