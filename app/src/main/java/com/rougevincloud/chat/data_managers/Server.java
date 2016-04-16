@@ -33,7 +33,7 @@ public class Server {
             e.printStackTrace();
             return null;
         }
-    } //OK
+    } //SERVER OK
 
     public static Integer connect(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
@@ -62,6 +62,7 @@ public class Server {
         try {
             passwd = hashPasswd(passwd);
             activity.setHashPasswd(passwd);
+
             result = new JSONGetter(url + "insert/user.php?username=" + pseudo +"&password="+ passwd).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
@@ -74,7 +75,7 @@ public class Server {
             e.printStackTrace();
             return null;
         }
-    } //OK
+    } //SERVER OK
 
     public static String hashPasswd(String passwd) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
