@@ -123,6 +123,21 @@ public class Server {
         }
     }
 
+    @Nullable
+    public static Boolean addFriend(int userId, int friendId) {
+        try {
+            JSONObject result = new JSONGetter(
+                    url +"insert/friend.php?u_id="+ userId +
+                            "&f_id="+ friendId).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return result.getBoolean("response");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static List<UserItem> parseUsers(JSONObject result, String arrayName) throws Exception {
         List<UserItem> users = new ArrayList<>();
 
