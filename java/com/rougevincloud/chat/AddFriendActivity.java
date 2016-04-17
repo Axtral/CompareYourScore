@@ -45,6 +45,7 @@ public class AddFriendActivity extends AppCompatActivity {
                     intent.putExtra(EXTRA_NEWFRIEND_PSEUDO, friendToAdd.getPseudo());
                     intent.putExtra(EXTRA_NEWFRIEND_ID, friendToAdd.getId());
                     startActivity(intent);
+                    finish();
                 }
             }
         });

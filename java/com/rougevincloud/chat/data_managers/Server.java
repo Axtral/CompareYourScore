@@ -120,6 +120,7 @@ public class Server {
         }
     }
 
+    @Nullable
     public static UserItem findUserByUsername(String username) {
         try {
             JSONObject result = new JSONGetter(url + "show/user.php?username="+username).execute().get();
@@ -220,6 +221,24 @@ public class Server {
         }
 
         return list;
+    }
+
+    @Nullable
+    public static Integer addChallenge(ChallengeItem challenge) {
+        try {
+            JSONObject result = new JSONGetter(url +"insert/challenge.php?title="+ challenge.getTitle()
+                    +"&description="+ challenge.getDesc()
+                    +"&icon="+ challenge.getImg()).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            Boolean response = result.getBoolean("response");
+            if (!response)
+                throw new Exception(result.getString("message"));
+            return result.getInt("id");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////SCORES

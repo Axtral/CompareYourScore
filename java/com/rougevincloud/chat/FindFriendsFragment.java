@@ -78,6 +78,8 @@ public class FindFriendsFragment extends ListFragment {
         if (extras == null)
             return;
         String newFriendPseudo = extras.getString(AddFriendActivity.EXTRA_NEWFRIEND_PSEUDO);
+        if (newFriendPseudo == null)
+            return;
         int newFriendId = getActivity().getIntent().getExtras().getInt(AddFriendActivity.EXTRA_NEWFRIEND_ID);
         UserItem newFriend = new UserItem(newFriendId, newFriendPseudo, null);
         friends.add(newFriend);

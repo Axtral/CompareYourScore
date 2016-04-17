@@ -15,17 +15,18 @@ import com.rougevincloud.chat.interactions.CreateChallengeListener;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.data_managers.Server;
+import com.rougevincloud.chat.lists.UserItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorldFragment extends ListFragment {
+    private List<ChallengeItem> challenges;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_list_challenges, container, false);
-        List<ChallengeItem> challenges;
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -75,5 +76,32 @@ public class WorldFragment extends ListFragment {
         setListAdapter(new ListChallengeAdapter(getActivity(), challenges));
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle extras = getActivity().getIntent().getExtras();
+        if (extras == null)
+            return;
+        String newChallengeTitle = extras.getString(CreateChallengeActivity.EXTRA_NEWCHALLENGE_TITLE);
+        if (newChallengeTitle == null)
+            return;
+        String newChallengeDesc = extras.getString(CreateChallengeActivity.EXTRA_NEWCHALLENGE_DESC);
+        int newChallengeId = getActivity().getIntent().getExtras().getInt(CreateChallengeActivity.EXTRA_NEWCHALLENGE_ID);
+        String newChallengeImg = extras.getString(CreateChallengeActivity.EXTRA_NEWCHALLENGE_IMG);
+        ChallengeItem newChallenge = new ChallengeItem(newChallengeId, newChallengeImg, newChallengeTitle, newChallengeDesc);
+        challenges.add(newChallenge);
+        getListView().invalidateViews();
+
+        DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBOpenHelper.COLUMN_ID, newChallenge.getId());
+        values.put(DBOpenHelper.COLUMN_TITLE, newChallenge.getTitle());
+        values.put(DBOpenHelper.COLUMN_DESC, newChallenge.getDesc());
+        values.put(DBOpenHelper.COLUMN_IMG, newChallenge.getImg());
+        db.insert(DBOpenHelper.DATABASE_TABLE_ALL, null, values);
+        db.close();
     }
 }
