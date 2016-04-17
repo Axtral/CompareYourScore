@@ -84,6 +84,8 @@ public class FindFriendsFragment extends ListFragment {
         UserItem newFriend = new UserItem(newFriendId, newFriendPseudo, null);
         friends.add(newFriend);
         getListView().invalidateViews();
+        getActivity().getIntent().removeExtra(AddFriendActivity.EXTRA_NEWFRIEND_ID);
+        getActivity().getIntent().removeExtra(AddFriendActivity.EXTRA_NEWFRIEND_PSEUDO);
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
         SQLiteDatabase db = helper.getWritableDatabase();

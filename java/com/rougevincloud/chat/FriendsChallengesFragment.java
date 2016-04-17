@@ -96,6 +96,10 @@ public class FriendsChallengesFragment extends ListFragment {
         ChallengeItem newChallenge = new ChallengeItem(newChallengeId, newChallengeImg, newChallengeTitle, newChallengeDesc);
         challenges.add(newChallenge);
         getListView().invalidateViews();
+        getActivity().getIntent().removeExtra(CreateChallengeActivity.EXTRA_NEWCHALLENGE_TITLE);
+        getActivity().getIntent().removeExtra(CreateChallengeActivity.EXTRA_NEWCHALLENGE_ID);
+        getActivity().getIntent().removeExtra(CreateChallengeActivity.EXTRA_NEWCHALLENGE_IMG);
+        getActivity().getIntent().removeExtra(CreateChallengeActivity.EXTRA_NEWCHALLENGE_DESC);
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
         SQLiteDatabase db = helper.getWritableDatabase();

@@ -3,6 +3,7 @@ package com.rougevincloud.chat;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,6 +51,9 @@ public class CreateChallengeActivity extends AppCompatActivity {
 
                 ChallengeItem newChallenge = new ChallengeItem(0, img.getText().toString(), title.getText().toString(), desc.getText().toString());
 
+                Log.d("img", img.getText().toString());
+                Log.d("title", title.getText().toString());
+                Log.d("desc", desc.getText().toString());
                 Integer id = Server.addChallenge(newChallenge);
                 if (id != null) {
                     Intent intent = new Intent(CreateChallengeActivity.this, MainActivity.class);

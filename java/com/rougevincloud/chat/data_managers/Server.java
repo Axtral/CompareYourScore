@@ -43,7 +43,7 @@ public class Server {
     public static Integer connect(String pseudo, String passwd) {
         JSONObject result;
         try {
-            result = new JSONGetter(url + "connectUser.php?username=" + pseudo + "&password=" +passwd)
+            result = new JSONGetter(url + "connectUser.php?username=" + pseudo.replace(" ", "%20") + "&password=" +passwd.replace(" ", "%20"))
                     .execute().get();
 
             if (result == null)
@@ -66,7 +66,7 @@ public class Server {
     public static Integer register(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
-            result = new JSONGetter(url + "insert/user.php?username=" + pseudo +"&password="+ passwd).execute().get();
+            result = new JSONGetter(url + "insert/user.php?username=" + pseudo.replace(" ", "%20") +"&password="+ passwd.replace(" ", "%20")).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             Boolean response = result.getBoolean("response");
@@ -97,7 +97,7 @@ public class Server {
     @Nullable
     public static List<UserItem> findAllFriends(int userId) {
         try {
-            JSONObject result = new JSONGetter(url + "/show/friend.php?u_id="+userId).execute().get();
+            JSONObject result = new JSONGetter(url + "show/friend.php?u_id="+userId).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return parseUsers(result, "friends");
@@ -123,7 +123,7 @@ public class Server {
     @Nullable
     public static UserItem findUserByUsername(String username) {
         try {
-            JSONObject result = new JSONGetter(url + "show/user.php?username="+username).execute().get();
+            JSONObject result = new JSONGetter(url + "show/user.php?username="+username.replace(" ", "%20")).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             List<UserItem> found = parseUsers(result, "users");
@@ -220,9 +220,9 @@ public class Server {
     @Nullable
     private static List<ChallengeItem> findChallenges(String getField, String val) {
         try {
-            String uri = "/show/challenge.php";
+            String uri = "show/challenge.php";
             if (val != null)
-                uri += "?"+ getField +"="+ val;
+                uri += "?"+ getField +"="+ val.replace(" ", "%20");
             JSONObject result = new JSONGetter(url + uri).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
@@ -252,9 +252,9 @@ public class Server {
     @Nullable
     public static Integer addChallenge(ChallengeItem challenge) {
         try {
-            JSONObject result = new JSONGetter(url +"insert/challenge.php?title="+ challenge.getTitle()
-                    +"&description="+ challenge.getDesc()
-                    +"&icon="+ challenge.getImg()).execute().get();
+            JSONObject result = new JSONGetter(url +"insert/challenge.php?title="+ challenge.getTitle().replace(" ", "%20")
+                    +"&description="+ challenge.getDesc().replace(" ", "%20")
+                    +"&icon="+ challenge.getImg().replace(" ", "%20")).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             Boolean response = result.getBoolean("response");
@@ -280,7 +280,7 @@ public class Server {
     @Nullable
     private static List<ScoreItem> findScores(int id, String getField) {
         try {
-            JSONObject result = new JSONGetter(url +"/show/score.php?"+ getField +"=" + id).execute().get();
+            JSONObject result = new JSONGetter(url +"show/score.php?"+ getField +"=" + id).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             return parseScores(result);
