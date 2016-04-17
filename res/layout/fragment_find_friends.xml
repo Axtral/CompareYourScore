@@ -11,15 +11,14 @@
         android:layout_gravity="center_horizontal"
         android:weightSum="1">
 
-        <EditText
+        <com.rougevincloud.chat.custom_views.MonoButton
             android:layout_width="match_parent"
-            android:textSize="25sp"
             android:layout_height="match_parent"
-            android:id="@+id/addFriendTextEdit"
-            android:hint="Search for new friends !"
-            android:layout_gravity="bottom"
-            android:fontFamily=""
-            android:gravity="bottom" />
+            android:layout_weight="7"
+            android:text="@string/add_friend"
+            android:background="@color/greyLight"
+            android:textColor="@color/greyDark"
+            android:id="@+id/add_challenge"/>
 
     </LinearLayout>
 
