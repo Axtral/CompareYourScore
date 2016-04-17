@@ -31,12 +31,14 @@ public class FriendsChallengesFragment extends ListFragment {
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
         SQLiteDatabase db = helper.getReadableDatabase();
+        String[] cols = {DBOpenHelper.COLUMN_ID, DBOpenHelper.COLUMN_IMG, DBOpenHelper.COLUMN_TITLE, DBOpenHelper.COLUMN_DESC};
+        Cursor cursor = db.query(DBOpenHelper.DATABASE_TABLE_FRIENDS, cols, null, null, null, null, null);
         //getContext().getDatabasePath(DBOpenHelper.DATABASE_NAME).delete();
-        if (!DBOpenHelper.isJustCreated()) {
+        Integer nbChallengesOnline = Server.countFriendsChallenges(((MainActivity) getActivity()).getIdUser());
+        int nbChallengesLocal = cursor.getCount();
+        if (!DBOpenHelper.isJustCreated() && nbChallengesOnline==null && nbChallengesLocal==nbChallengesOnline) {
             //read from db
             challenges = new ArrayList<>();
-            String[] cols = {DBOpenHelper.COLUMN_ID, DBOpenHelper.COLUMN_IMG, DBOpenHelper.COLUMN_TITLE, DBOpenHelper.COLUMN_DESC};
-            Cursor cursor = db.query(DBOpenHelper.DATABASE_TABLE_FRIENDS, cols, null, null, null, null, null);
             int idIndex = cursor.getColumnIndex(DBOpenHelper.COLUMN_ID);
             int titleIndex = cursor.getColumnIndex(DBOpenHelper.COLUMN_TITLE);
             int descIndex = cursor.getColumnIndex(DBOpenHelper.COLUMN_DESC);

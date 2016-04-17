@@ -171,6 +171,32 @@ public class Server {
 //////////////////////////////////////////////////////////////////////////////////////////CHALLENGES
 
     @Nullable
+    public static Integer countChallenges() {
+        try {
+            JSONObject result = new JSONGetter(url + "show/challenge.php?action=count").execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return result.getInt("count");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Nullable
+    public static Integer countFriendsChallenges(int id) {
+        try {
+            JSONObject result = new JSONGetter(url + "show/challenge.php?action=count&u_id="+id).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return result.getInt("count");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Nullable
     public static ChallengeItem findChallengeById(int id) {
         try {
             JSONObject result = new JSONGetter(url + "show/challenge.php?id="+id).execute().get();
