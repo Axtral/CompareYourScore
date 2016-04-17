@@ -70,7 +70,7 @@ public class WorldFragment extends ListFragment {
             db.close();
         }
 
-//        rootView.findViewById(R.id.add_challenge).setOnClickListener(new CreateChallengeListener(getActivity()));
+        rootView.findViewById(R.id.add_challenge).setOnClickListener(new CreateChallengeListener(getActivity()));
 
         setListAdapter(new ListChallengeAdapter(getActivity(), challenges));
 
