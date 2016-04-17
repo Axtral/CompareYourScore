@@ -2,11 +2,13 @@ package com.rougevincloud.chat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.rougevincloud.chat.data_managers.Server;
+import com.rougevincloud.chat.interactions.AddFriendListener;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.lists.ListUserAdapter;
 import com.rougevincloud.chat.lists.UserItem;
@@ -19,7 +21,7 @@ public class AddFriendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
 
-        final int idUser = getIntent().getExtras().getInt(ListUserAdapter.EXTRA_IDUSER);
+        final int idUser = getIntent().getExtras().getInt(AddFriendListener.EXTRA_IDUSER);
 
         Button submit = (Button) findViewById(R.id.submitFriend);
         if (submit == null)
@@ -35,8 +37,15 @@ public class AddFriendActivity extends AppCompatActivity {
                     username.setHintTextColor(getColor(R.color.error));
                     return;
                 }
+
                 UserItem friendToAdd = Server.findUserByUsername(username.getText().toString());
-                Server.addFriend(idUser,friendToAdd.getId());
+                if (friendToAdd != null) {
+                    Boolean aze = Server.addFriend(idUser, friendToAdd.getId());
+                    if (aze != null && aze)
+                        Log.d("friend", "ok");
+                }
+                else
+                    Log.d("friend", "unfound");
             }
         });
     }

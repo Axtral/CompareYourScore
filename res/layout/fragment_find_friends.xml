@@ -18,7 +18,7 @@
             android:text="@string/add_friend"
             android:background="@color/greyLight"
             android:textColor="@color/greyDark"
-            android:id="@+id/add_challenge"/>
+            android:id="@+id/add_friend"/>
 
     </LinearLayout>
 

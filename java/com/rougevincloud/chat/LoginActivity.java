@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.rougevincloud.chat.data_managers.Server;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,13 +76,22 @@ public class LoginActivity extends AppCompatActivity {
 
                 //server work
                 Boolean ok;
-                Integer id;
+                Integer id = null;
+
+                try {
+                    hashPasswd = Server.hashPasswd(passwd.getText().toString());
+                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    toast(e.getMessage());
+                    return;
+                }
+
                 if (pseudoExists) { //connection
-                    id = Server.connect(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
+                    id = Server.connect(pseudo.getText().toString(), hashPasswd);
                     ok = id != null;
                 }
                 else {  //register
-                    id = Server.register(pseudo.getText().toString(), passwd.getText().toString(), LoginActivity.this);
+                    id = Server.register(pseudo.getText().toString(), hashPasswd, LoginActivity.this);
                     ok = id != null;
                 }
 
@@ -108,10 +119,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    public void setHashPasswd(String hashPasswd) {
-        this.hashPasswd = hashPasswd;
     }
 
     private class PseudoLooker extends TimerTask {

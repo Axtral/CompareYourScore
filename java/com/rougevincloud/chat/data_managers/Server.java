@@ -40,22 +40,22 @@ public class Server {
     } //SERVER OK
 
     @Nullable
-    public static Integer connect(String pseudo, String passwd, LoginActivity activity) {
+    public static Integer connect(String pseudo, String passwd) {
         JSONObject result;
         try {
-            passwd = hashPasswd(passwd);
-            activity.setHashPasswd(passwd);
-            result = new JSONGetter(url + "connectUser?username=" + pseudo + "&password=" +passwd)
+            result = new JSONGetter(url + "connectUser.php?username=" + pseudo + "&password=" +passwd)
                     .execute().get();
 
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
             Boolean response = result.getBoolean("response");
             if (!response)
-                activity.toast(result.getString("message"));
+                //activity.toast(result.getString("message"));
+                Log.d("message : ", result.getString("message"));
             return result.getInt("id");
         } catch (Exception e) {
-            activity.toast("Error : " + e.getMessage());
+            //activity.toast("Error : " + e.getMessage());
+            Log.d("message : ", "Error : " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -66,9 +66,6 @@ public class Server {
     public static Integer register(String pseudo, String passwd, LoginActivity activity) {
         JSONObject result;
         try {
-            passwd = hashPasswd(passwd);
-            activity.setHashPasswd(passwd);
-
             result = new JSONGetter(url + "insert/user.php?username=" + pseudo +"&password="+ passwd).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
@@ -128,6 +125,9 @@ public class Server {
             JSONObject result = new JSONGetter(url + "show/user.php?username="+username).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
+            List<UserItem> found = parseUsers(result, "users");
+            if (found.size() < 0)
+                return null;
             return parseUsers(result, "users").get(0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,7 +143,10 @@ public class Server {
                             "&f_id="+ friendId).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
-            return result.getBoolean("response");
+            Boolean response = result.getBoolean("response");
+            if (!response)
+                throw new Exception(result.getString("message"));
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -9,9 +9,13 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.rougevincloud.chat.custom_views.CustomPageTransformer;
+import com.rougevincloud.chat.data_managers.Server;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
         //Set user
         SharedPreferences prefs = getSharedPreferences("user_infos", MODE_PRIVATE);
         pseudo = prefs.getString("pseudo", null);
+        String passwd = prefs.getString("passwd", null);
         idUser = prefs.getInt("id", 0);
-        if (pseudo == null) {
+        if (pseudo == null || passwd == null || idUser == 0 || !Objects.equals(Server.connect(pseudo, passwd), idUser)) {
             Intent login = new Intent(this, LoginActivity.class);
             startActivity(login);
             finish();
