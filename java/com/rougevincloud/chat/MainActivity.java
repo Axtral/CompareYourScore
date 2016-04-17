@@ -9,17 +9,13 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.rougevincloud.chat.custom_views.CustomPageTransformer;
-import com.rougevincloud.chat.lib.cache.FileCache;
-
-import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Fragment[] frags = new Fragment[2];
+    private Fragment[] frags = new Fragment[3];
     private String pseudo;
     private Integer idUser;
 
@@ -46,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         hello.setText( String.format(getResources().getString(R.string.hello), pseudo) );
 
         //Set fragments
-        frags[0] = new FriendsFragment();
-        frags[1] = new WorldFragment();
+        frags[0] = new FindFriendsFragment();
+        frags[1] = new FriendsChallengesFragment();
+        frags[2] = new WorldFragment();
 
         //Set Pager
         ViewPager vp = (ViewPager) findViewById(R.id.vp);
@@ -67,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        public final String[] fragmentNames = {"Find Friends", "Friends Challenges", "World Challenges"};
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Friends";
+            return fragmentNames[position];
         }
     }
 

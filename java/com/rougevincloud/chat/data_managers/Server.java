@@ -1,6 +1,7 @@
 package com.rougevincloud.chat.data_managers;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.rougevincloud.chat.LoginActivity;
 import com.rougevincloud.chat.lists.ChallengeItem;
@@ -94,9 +95,38 @@ public class Server {
         return sb.toString();
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////USERS
+
+    public static List<UserItem> findAllFriends(int userId) {
+        try {
+            JSONObject result = new JSONGetter(url + "/show/friend.php?u_id="+userId).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return parseUsers(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static List<UserItem> parseUsers(JSONObject result) throws Exception {
+        List<UserItem> users = new ArrayList<>();
+
+        Log.d("friends", result.toString());
+        JSONArray data = result.getJSONArray("friends");
+        int i = 0;
+        while (i < data.length()) {
+            JSONObject item = data.getJSONObject(i++);
+            int id = item.getInt("id");
+            String username = item.getString("username");
+            users.add(new UserItem(id, username, null));
+        }
+        return users;
+    }
+
 //////////////////////////////////////////////////////////////////////////////////////////CHALLENGES
 
-
+    @Nullable
     private static ChallengeItem findChallengeById(int id) {
         try {
             JSONObject result = new JSONGetter(url + "show/challenge.php?id="+id).execute().get();
@@ -117,6 +147,7 @@ public class Server {
         return findChallenges("username", pseudo);
     }
 
+    @Nullable
     private static List<ChallengeItem> findChallenges(String getField, String val) {
         try {
             String uri = "/show/challenge.php";
@@ -134,14 +165,14 @@ public class Server {
 
     private static List<ChallengeItem> parseChallenges(JSONObject result) throws Exception {
         List<ChallengeItem> list = new ArrayList<>();
-        JSONArray data = result.getJSONArray("data");
+        JSONArray data = result.getJSONArray("challenges");
         int i = 0;
         while (i < data.length()) {
             JSONObject item = data.getJSONObject(i++);
             int id = item.getInt("id");
             String iconUrl = item.getString("icon");
             String title = item.getString("title");
-            String desc = item.getString("desc");
+            String desc = item.getString("description");
             list.add(new ChallengeItem(id, iconUrl, title, desc));
         }
 
@@ -209,6 +240,5 @@ public class Server {
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////FRIENDS
 
 

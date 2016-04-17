@@ -2,11 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_selector"
     android:orientation="horizontal"
     android:padding="5dip" >
 
-	<!--  ListRow Left sied Thumbnail image -->
 	<LinearLayout android:id="@+id/thumbnail" 
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -22,8 +20,7 @@
 	        android:src="@drawable/ic_account_box_black_48dp"/>
         
 	</LinearLayout>
-    
-	<!-- Title Of Song-->
+
     <TextView
         android:id="@+id/friendName"
         android:layout_width="wrap_content"
@@ -36,7 +33,6 @@
         android:textSize="20dip"
         android:textStyle="bold"/>
 
-	<!-- Artist Name -->
     <TextView
         android:id="@+id/scoreTotal"
         android:layout_width="fill_parent"
@@ -48,7 +44,6 @@
         android:layout_toRightOf="@+id/thumbnail"
         android:text="9000pts" />
 
-	<!-- Rightend Duration -->
     <TextView
         android:id="@+id/rank"
         android:layout_width="wrap_content"

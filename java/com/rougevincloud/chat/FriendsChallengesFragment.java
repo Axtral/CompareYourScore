@@ -1,46 +1,34 @@
 package com.rougevincloud.chat;
 
 import android.content.ContentValues;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rougevincloud.chat.data_managers.DBOpenHelper;
+import com.rougevincloud.chat.data_managers.Server;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
-import com.rougevincloud.chat.data_managers.Server;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class FriendsFragment extends ListFragment {
+public class FriendsChallengesFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_friends, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_find_friends, container, false);
 
         List<ChallengeItem> challenges;
 
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
         SQLiteDatabase db = helper.getReadableDatabase();
-        //getContext().getDatabasePath(DBOpenHelper.DATABASE_NAME).delete();
         if (!DBOpenHelper.isJustCreated()) {
             //read from db
             challenges = new ArrayList<>();
