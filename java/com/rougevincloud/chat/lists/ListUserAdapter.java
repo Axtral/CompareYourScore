@@ -10,7 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rougevincloud.chat.AddFriendActivity;
 import com.rougevincloud.chat.ChallengeActivity;
+import com.rougevincloud.chat.CreateChallengeActivity;
 import com.rougevincloud.chat.MainActivity;
 import com.rougevincloud.chat.R;
 import com.rougevincloud.chat.lib.cache.ImageLoader;
@@ -85,7 +87,9 @@ public class ListUserAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            //todo add friend
+            Intent intent = new Intent(activity, AddFriendActivity.class);
+            intent.putExtra(EXTRA_IDUSER, ((MainActivity) activity).getIdUser());
+            activity.startActivity(intent);
         }
     }
 }

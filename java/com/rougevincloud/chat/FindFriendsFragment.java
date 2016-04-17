@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.rougevincloud.chat.data_managers.DBOpenHelper;
 import com.rougevincloud.chat.data_managers.Server;
+import com.rougevincloud.chat.interactions.AddFriendListener;
+import com.rougevincloud.chat.interactions.CreateChallengeListener;
+import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.lists.ListUserAdapter;
 import com.rougevincloud.chat.lists.UserItem;
 
@@ -62,8 +65,9 @@ public class FindFriendsFragment extends ListFragment {
             db.close();
         }
 
-        if (friends != null)
-            setListAdapter(new ListUserAdapter(getActivity(), friends));
+        rootView.findViewById(R.id.submitFriend).setOnClickListener(new AddFriendListener(getActivity()));
+
+        setListAdapter(new ListUserAdapter(getActivity(), friends));
 
         return rootView;
     }
