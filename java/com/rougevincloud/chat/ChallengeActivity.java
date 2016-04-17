@@ -51,8 +51,10 @@ public class ChallengeActivity extends ListActivity {
                     scoresViewContent.get(0).remove("score");
                     scoresViewContent.get(0).put("score", newScore);
                 }
-                else
+                else {
                     addSportViewContent("You", Integer.parseInt(newScore), 0);
+                    ownScore = new ScoreItem(0, null, null, Integer.parseInt(newScore));
+                }
                 getListView().invalidateViews();
             }
         });

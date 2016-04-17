@@ -97,23 +97,36 @@ public class Server {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////USERS
 
+    @Nullable
     public static List<UserItem> findAllFriends(int userId) {
         try {
             JSONObject result = new JSONGetter(url + "/show/friend.php?u_id="+userId).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
-            return parseUsers(result);
+            return parseUsers(result, "friends");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private static List<UserItem> parseUsers(JSONObject result) throws Exception {
+    @Nullable
+    private static UserItem findUserById(int id) {
+        try {
+            JSONObject result = new JSONGetter(url + "show/user.php?id="+id).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return parseUsers(result, "users").get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static List<UserItem> parseUsers(JSONObject result, String arrayName) throws Exception {
         List<UserItem> users = new ArrayList<>();
 
-        Log.d("friends", result.toString());
-        JSONArray data = result.getJSONArray("friends");
+        JSONArray data = result.getJSONArray(arrayName);
         int i = 0;
         while (i < data.length()) {
             JSONObject item = data.getJSONObject(i++);
@@ -182,11 +195,11 @@ public class Server {
 //////////////////////////////////////////////////////////////////////////////////////////SCORES
 
     public static List<ScoreItem> findScoresByChallenge(int id) {
-        return findScores(id, "challenge");
+        return findScores(id, "c_id");
     }
 
     public static List<ScoreItem> findScoresByUser(int id) {
-        return findScores(id, "user");
+        return findScores(id, "u_id");
     }
 
     @Nullable
@@ -230,9 +243,10 @@ public class Server {
             int userId = item.getInt("user_id");
             int score = item.getInt("score");
             ChallengeItem challenge = findChallengeById(challengeId);
+            UserItem user = findUserById(userId);
             list.add(new ScoreItem(id,
                     challenge,
-                    new UserItem(userId, null, null),                           //todo findUserById
+                    user,
                     score));
         }
 
