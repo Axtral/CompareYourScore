@@ -65,7 +65,7 @@ public class FindFriendsFragment extends ListFragment {
             db.close();
         }
 
-        rootView.findViewById(R.id.submitFriend).setOnClickListener(new AddFriendListener(getActivity()));
+//        rootView.findViewById(R.id.submitFriend).setOnClickListener(new AddFriendListener(getActivity()));
 
         setListAdapter(new ListUserAdapter(getActivity(), friends));
 
