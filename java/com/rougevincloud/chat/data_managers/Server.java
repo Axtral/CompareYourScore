@@ -123,6 +123,18 @@ public class Server {
         }
     }
 
+    private static UserItem getUserByUsername(String username) {
+        try {
+            JSONObject result = new JSONGetter(url + "show/user.php?username="+username).execute().get();
+            if (result == null)
+                throw new ExecutionException("Unreachable server", new Error());
+            return parseUsers(result, "users").get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Nullable
     public static Boolean addFriend(int userId, int friendId) {
         try {
