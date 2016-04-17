@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.rougevincloud.chat.data_managers.DBOpenHelper;
+import com.rougevincloud.chat.interactions.CreateChallengeListener;
 import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.data_managers.Server;
@@ -23,7 +24,7 @@ public class WorldFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_world, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_list_challenges, container, false);
         List<ChallengeItem> challenges;
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
@@ -68,6 +69,8 @@ public class WorldFragment extends ListFragment {
             }
             db.close();
         }
+
+        rootView.findViewById(R.id.add_challenge).setOnClickListener(new CreateChallengeListener(getActivity()));
 
         setListAdapter(new ListChallengeAdapter(getActivity(), challenges));
 

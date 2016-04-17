@@ -13,5 +13,9 @@
     <string name="ok">Ok</string>
     <string name="desc_challenge_icon">Challenge Icon</string>
     <string name="score_update">Set your score</string>
+    <string name="challenge_create">Create a challenge !</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="img_link">Link to image</string>
     <!--todo vf-->
 </resources>

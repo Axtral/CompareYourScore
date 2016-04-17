@@ -63,10 +63,14 @@ public class LoginActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Objects.equals(pseudo.getText().toString(), ""))
+                if (Objects.equals(pseudo.getText().toString(), "")) {
                     pseudo.setHintTextColor(getColor(R.color.error));
-                if (Objects.equals(passwd.getText().toString(), ""))
+                    return;
+                }
+                if (Objects.equals(passwd.getText().toString(), "")) {
                     passwd.setHintTextColor(getColor(R.color.error));
+                    return;
+                }
 
                 //server work
                 Boolean ok;
