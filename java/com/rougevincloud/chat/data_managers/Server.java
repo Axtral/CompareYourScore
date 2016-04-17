@@ -171,7 +171,7 @@ public class Server {
 //////////////////////////////////////////////////////////////////////////////////////////CHALLENGES
 
     @Nullable
-    private static ChallengeItem findChallengeById(int id) {
+    public static ChallengeItem findChallengeById(int id) {
         try {
             JSONObject result = new JSONGetter(url + "show/challenge.php?id="+id).execute().get();
             if (result == null)
@@ -265,7 +265,7 @@ public class Server {
     }
 
     @Nullable
-    public static Boolean setScore(int challengeId, int userId, int score) {
+    public static Integer setScore(int challengeId, int userId, int score) {
         try {
                     JSONObject result = new JSONGetter(
                             url +"update/score.php?challenge_id="+ challengeId +
@@ -273,7 +273,7 @@ public class Server {
                                     "&score="+ score).execute().get();
             if (result == null)
                 throw new ExecutionException("Unreachable server", new Error());
-            return result.getBoolean("response");
+            return result.getInt("id");
         } catch (Exception e) {
             e.printStackTrace();
             return null;

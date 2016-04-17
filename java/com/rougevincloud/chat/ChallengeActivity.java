@@ -2,6 +2,7 @@ package com.rougevincloud.chat;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -13,9 +14,11 @@ import android.widget.ListAdapter;
 import android.widget.SimpleAdapter;
 
 import com.rougevincloud.chat.data_managers.Server;
+import com.rougevincloud.chat.lists.ChallengeItem;
 import com.rougevincloud.chat.lists.ListChallengeAdapter;
 import com.rougevincloud.chat.lists.ListScoreAdapter;
 import com.rougevincloud.chat.lists.ScoreItem;
+import com.rougevincloud.chat.lists.UserItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,12 +30,17 @@ public class ChallengeActivity extends ListActivity {
     private List<ScoreItem> scores;
     private ArrayList< HashMap<String, String> > scoresViewContent = new ArrayList<>();
     private ScoreItem ownScore = null;
+    private UserItem user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final int idChallenge = getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_ID);
-        final int idUser = getIntent().getExtras().getInt(ListChallengeAdapter.EXTRA_IDUSER);
+        SharedPreferences prefs = getSharedPreferences("user_infos", MODE_PRIVATE);
+        String pseudo = prefs.getString("pseudo", null);
+        String passwd = prefs.getString("passwd", null);
+        int idUser = prefs.getInt("id", 0);
+        user = new UserItem(idUser, pseudo, passwd);
         setContentView(R.layout.activity_challenge);
 
         Button btn = (Button) findViewById(R.id.update);
@@ -46,10 +54,23 @@ public class ChallengeActivity extends ListActivity {
                     return;
                 }
 
-                Server.setScore(idChallenge, idUser, Integer.parseInt(newScore));
-
-                //todo set view
-                getListView().invalidateViews();
+                Integer id = Server.setScore(idChallenge, user.getId(), Integer.parseInt(newScore));
+                if (id != null) {
+                    ChallengeItem challenge = Server.findChallengeById(idChallenge);
+                    ScoreItem score = new ScoreItem(id, challenge, user, Integer.parseInt(newScore));
+                    int index = scores.size()-1;
+                    for (int i =  0; i < scores.size(); ++i) {
+                        if (index == scores.size()-1 && scores.get(i).getScore() < score.getScore()) {
+                            index = i;
+                        }
+                        if (scores.get(i).getUser().getId() == user.getId()) {
+                            scores.remove(i);
+                        }
+                    }
+                    scores.add(index, score);
+                    getListView().invalidateViews();
+                    scoreEdit.setText("");
+                }
             }
         });
 

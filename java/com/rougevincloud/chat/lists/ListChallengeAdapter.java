@@ -23,7 +23,6 @@ public class ListChallengeAdapter extends BaseAdapter {
     private Activity activity;
     private ImageLoader imageLoader;
     public final static String EXTRA_ID = "com.rougevincloud.chat.ID";
-    public final static String EXTRA_IDUSER = "com.rougevincloud.chat.IDUSER";
 
     public ListChallengeAdapter(Activity activity, List<ChallengeItem> items) {
         this.items = items;
@@ -93,7 +92,6 @@ public class ListChallengeAdapter extends BaseAdapter {
         public void onClick(View v) {
             Intent intent = new Intent(activity, ChallengeActivity.class);
             intent.putExtra(EXTRA_ID, id);
-            intent.putExtra(EXTRA_IDUSER, ((MainActivity) activity).getIdUser());
             activity.startActivity(intent);
         }
     }
