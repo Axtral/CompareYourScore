@@ -68,7 +68,7 @@ public class FindFriendsFragment extends ListFragment {
         if (friends != null)
             setListAdapter(new ListUserAdapter(getActivity(), friends));
 
-
+        rootView.findViewById(R.id.submitFriend).setOnClickListener(new AddFriendListener(getActivity()));
 
         return rootView;
     }
