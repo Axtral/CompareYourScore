@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CompareYourScore</string>
+    <string name="welcome">Bienvenue dans\t</string>
+    <string name="pseudo">Pseudo</string>
+    <string name="passwd">Mot de passe</string>
+    <string name="login_form_ok">Entrer :)</string>
+    <string name="invite">Veuillez entrer votre pseudo ci dessous</string>
+    <string name="invite_connection">Ce pseudo existe, vous pouvez vous connecter si c\'est le votre.</string>
+    <string name="invite_inscription">Ce pseudo n\'existe pas, vous pouvez vous inscrire si vous n\'avez pas de compte</string>
+    <string name="invite_loading">Recherche du pseudo…</string>
+    <string name="hello">Bonjour, %s !</string>
+    <string name="write_hint">Ecrivez votre message ici</string>
+    <string name="score_update">Entrez votre score</string>
+    <string name="challenge_create">Créer un challenge !</string>
+    <string name="title">Titre</string>
+    <string name="img_link">Lien vers l\'image</string>
+    <string name="add_friend">Ajouter un ami !</string>
+    <string name="username">Pseudo</string>
+</resources>
