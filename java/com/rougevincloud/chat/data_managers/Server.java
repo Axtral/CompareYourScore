@@ -187,8 +187,8 @@ public class Server {
         return findChallenges("", null);
     }
 
-    public static List<ChallengeItem> findFriendsChallenges(String pseudo) {
-        return findChallenges("username", pseudo);
+    public static List<ChallengeItem> findFriendsChallenges(int id) {
+        return findChallenges("u_id", String.valueOf(id));
     }
 
     @Nullable

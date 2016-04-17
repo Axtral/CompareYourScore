@@ -31,6 +31,7 @@ public class FriendsChallengesFragment extends ListFragment {
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
         SQLiteDatabase db = helper.getReadableDatabase();
+        //getContext().getDatabasePath(DBOpenHelper.DATABASE_NAME).delete();
         if (!DBOpenHelper.isJustCreated()) {
             //read from db
             challenges = new ArrayList<>();
@@ -52,7 +53,7 @@ public class FriendsChallengesFragment extends ListFragment {
             cursor.close();
         } else {
             //get challenges from web
-            challenges = Server.findFriendsChallenges(((MainActivity) getActivity()).getPseudo());
+            challenges = Server.findFriendsChallenges(((MainActivity) getActivity()).getIdUser());
 
             //set challenges in cache
             db = DBOpenHelper.getInstance(getContext()).getWritableDatabase();
