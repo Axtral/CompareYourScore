@@ -123,7 +123,7 @@ public class Server {
         }
     }
 
-    private static UserItem getUserByUsername(String username) {
+    public static UserItem findUserByUsername(String username) {
         try {
             JSONObject result = new JSONGetter(url + "show/user.php?username="+username).execute().get();
             if (result == null)
