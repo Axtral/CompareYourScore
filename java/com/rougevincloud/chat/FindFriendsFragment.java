@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FindFriendsFragment extends ListFragment {
+    private List<UserItem> friends;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_find_friends, container, false);
-
-        List<UserItem> friends;
 
         DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -46,7 +46,7 @@ public class FindFriendsFragment extends ListFragment {
         }
         else {
             //get friends from web
-            friends = Server.findAllFriends(((MainActivity) getActivity()).getIdUser()); //CURRENT USER ID
+            friends = Server.findAllFriends(((MainActivity) getActivity()).getIdUser());
 
             //set friends in cache
             db = DBOpenHelper.getInstance(getContext()).getWritableDatabase();
@@ -69,5 +69,26 @@ public class FindFriendsFragment extends ListFragment {
         rootView.findViewById(R.id.add_friend).setOnClickListener(new AddFriendListener(getActivity()));
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle extras = getActivity().getIntent().getExtras();
+        if (extras == null)
+            return;
+        String newFriendPseudo = extras.getString(AddFriendActivity.EXTRA_NEWFRIEND_PSEUDO);
+        int newFriendId = getActivity().getIntent().getExtras().getInt(AddFriendActivity.EXTRA_NEWFRIEND_ID);
+        UserItem newFriend = new UserItem(newFriendId, newFriendPseudo, null);
+        friends.add(newFriend);
+        getListView().invalidateViews();
+
+        DBOpenHelper helper = DBOpenHelper.getInstance(getContext());
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DBOpenHelper.COLUMN_ID, newFriend.getId());
+        values.put(DBOpenHelper.COLUMN_USERNAME, newFriend.getPseudo());
+        db.insert(DBOpenHelper.DATABASE_TABLE_ALL_FRIENDS, null, values);
+        db.close();
     }
 }

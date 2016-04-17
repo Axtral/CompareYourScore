@@ -1,21 +1,22 @@
 package com.rougevincloud.chat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.rougevincloud.chat.data_managers.Server;
 import com.rougevincloud.chat.interactions.AddFriendListener;
-import com.rougevincloud.chat.lists.ListChallengeAdapter;
-import com.rougevincloud.chat.lists.ListUserAdapter;
 import com.rougevincloud.chat.lists.UserItem;
 
 import java.util.Objects;
 
 public class AddFriendActivity extends AppCompatActivity {
+    public final static String EXTRA_NEWFRIEND_PSEUDO = "com.rougevincloud.chat.NEWFRIEND_PSEUDO";
+    public final static String EXTRA_NEWFRIEND_ID = "com.rougevincloud.chat.NEWFRIEND_ID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +40,12 @@ public class AddFriendActivity extends AppCompatActivity {
                 }
 
                 UserItem friendToAdd = Server.findUserByUsername(username.getText().toString());
-                if (friendToAdd != null) {
-                    Boolean aze = Server.addFriend(idUser, friendToAdd.getId());
-                    if (aze != null && aze)
-                        Log.d("friend", "ok");
+                if (friendToAdd != null && Server.addFriend(idUser, friendToAdd.getId()) != null) {
+                    Intent intent = new Intent(AddFriendActivity.this, MainActivity.class);
+                    intent.putExtra(EXTRA_NEWFRIEND_PSEUDO, friendToAdd.getPseudo());
+                    intent.putExtra(EXTRA_NEWFRIEND_ID, friendToAdd.getId());
+                    startActivity(intent);
                 }
-                else
-                    Log.d("friend", "unfound");
             }
         });
     }

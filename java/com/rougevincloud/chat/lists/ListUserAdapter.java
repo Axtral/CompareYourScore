@@ -87,9 +87,7 @@ public class ListUserAdapter extends BaseAdapter {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(activity, AddFriendActivity.class);
-            intent.putExtra(EXTRA_IDUSER, ((MainActivity) activity).getIdUser());
-            activity.startActivity(intent);
+            //todo profileActivity
         }
     }
 }
