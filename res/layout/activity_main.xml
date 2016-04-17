@@ -21,13 +21,16 @@
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/welcome"
-        android:id="@+id/vp">
+        android:id="@+id/vp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/welcome">
         <android.support.v4.view.PagerTitleStrip
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:padding="15sp"
+            android:textSize= "20sp"/>
     </android.support.v4.view.ViewPager>
 
     <!--todo landscape-->

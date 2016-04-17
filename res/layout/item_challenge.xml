@@ -16,7 +16,7 @@
         android:textSize="20sp"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@id/icon"
-        android:id="@+id/title" />
+        android:id="@+id/friendName" />
 
     <com.rougevincloud.chat.custom_views.MonoTextView
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:textSize="12sp"
         android:layout_marginStart="5dp"
         android:layout_toEndOf="@id/icon"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/friendName"
         android:id="@+id/desc" />
 
 </RelativeLayout>

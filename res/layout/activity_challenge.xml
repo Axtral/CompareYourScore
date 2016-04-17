@@ -18,7 +18,7 @@
         android:textSize="35sp"
         android:text="Title"
         android:textColor="@android:color/white"
-        android:id="@+id/title"/>
+        android:id="@+id/friendName"/>
 
     <ListView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:background="@android:color/white"
         android:id="@android:id/list"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/friendName"
         android:layout_above="@+id/bottom" />
 
     <LinearLayout
